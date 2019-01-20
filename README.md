@@ -34,7 +34,3 @@ $ yarn start
 - [React Rotuer DOM](https://reacttraining.com/react-router/web/guides/quick-start)
 - [Material UI](https://material-ui.com/)
 - [Apollo GraphQL](https://www.apollographql.com/) (usando [Rest Link](https://www.apollographql.com/docs/link/links/rest.html))
-
-## Live preview
-
-[Readable](https://st-readable-app.herokuapp.com/)
