@@ -1,6 +1,9 @@
 {
   "scripts": {
-    "heroku-prebuild": "cd api-server && npm install && node server.js",
-    "start": "cd frontend && npm install && npm run build"
+    "heroku-prebuild": "npm install && cd api-server && npm install && forever start server.js",
+    "start": "cd frontend && npm install && npm start"
+  },
+  "dependencies": {
+    "forever": "^0.15.3"
   }
 }
