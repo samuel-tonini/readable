@@ -37,4 +37,4 @@ $ yarn start
 
 ## Live preview
 
-[Readable](https://samuel-tonini.github.io/my-reads)
+[Readable](https://st-readable-app.herokuapp.com/)
