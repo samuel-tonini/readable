@@ -3,7 +3,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { RestLink } from "apollo-link-rest";
 import gql from "graphql-tag";
 
-const api = "http://localhost:3001";
+const api = "";
 
 // Generate a unique token for storing your bookshelf data on the backend server.
 let token = localStorage.token;
