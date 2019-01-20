@@ -1,7 +1,6 @@
 {
-    "scripts": {
-      "start": "cd api-server && node server.js",
-      "heroku-postbuild": "cd frontend && yarn && yarn run build"
-    }
+  "scripts": {
+    "start": "cd api-server && yarn && node server.js",
+    "heroku-postbuild": "cd frontend && yarn && yarn run build"
   }
-  
+}
