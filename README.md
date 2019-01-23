@@ -23,7 +23,11 @@ $ yarn install
 $ cd frontend
 $ yarn install
 
-# Para rodar vá ao diretório do app e inicie
+# Para rodar vá ao diretório do servidor e o inicie
+$ cd api-server
+$ node server.js
+
+# Para rodar vá ao diretório do app e o inicie
 $ cd frontend
 $ yarn start
 ```
