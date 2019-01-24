@@ -5,6 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { withRouter, Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 const styles = theme => ({
   root: {
@@ -17,7 +18,7 @@ const styles = theme => ({
   }
 });
 
-function SimpleTopBar({ classes, hideButtons = false, history }) {
+function SimpleTopBar({ classes, hideButtons = false, history, categories }) {
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -32,15 +33,15 @@ function SimpleTopBar({ classes, hideButtons = false, history }) {
               <Button color="inherit" onClick={() => history.push("/new")}>
                 Novo
               </Button>
-              <Button color="inherit" onClick={() => history.push("/react")}>
-                React
-              </Button>
-              <Button color="inherit" onClick={() => history.push("/redux")}>
-                Redux
-              </Button>
-              <Button color="inherit" onClick={() => history.push("/udacity")}>
-                Udacity
-              </Button>
+              {Object.values(categories).map(({ name, path }) => (
+                <Button
+                  color="inherit"
+                  key={name}
+                  onClick={() => history.push(`/${path}`)}
+                >
+                  {name}
+                </Button>
+              ))}
             </>
           )}
         </Toolbar>
@@ -49,4 +50,10 @@ function SimpleTopBar({ classes, hideButtons = false, history }) {
   );
 }
 
-export const TopBar = withRouter(withStyles(styles)(SimpleTopBar));
+function mapStateToProps({ categories }) {
+  return { categories };
+}
+
+export const TopBar = connect(mapStateToProps)(
+  withRouter(withStyles(styles)(SimpleTopBar))
+);

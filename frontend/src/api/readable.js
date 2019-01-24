@@ -49,7 +49,7 @@ function guid() {
   );
 }
 
-const initialDataQuery = gql`
+const postInitialDataQuery = gql`
   query {
     posts @rest(type: "Post", path: "/posts") {
       id
@@ -65,10 +65,27 @@ const initialDataQuery = gql`
   }
 `;
 
-export const getInitialData = () =>
-  client.query({ query: initialDataQuery }).then(res => {
-    return res.data.posts;
+const categoryInitialDataQuery = gql`
+  query {
+    categories @rest(type: "Categories", path: "/categories") {
+      categories @type(name: "Category") {
+        name
+        path
+      }
+    }
+  }
+`;
+
+export const getInitialData = () => {
+  const posts = client.query({ query: postInitialDataQuery });
+  const categories = client.query({ query: categoryInitialDataQuery });
+  return Promise.all([posts, categories]).then(([p, c]) => {
+    return {
+      posts: p.data.posts,
+      categories: c.data.categories.categories
+    };
   });
+};
 
 const addPostMutation = gql`
   mutation(

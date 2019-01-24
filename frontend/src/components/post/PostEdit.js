@@ -23,26 +23,16 @@ const styles = theme => ({
   }
 });
 
-function SimplePostEdit({ classes, history, dispatch }) {
+function SimplePostEdit({
+  classes,
+  history,
+  dispatch,
+  categories: categorias
+}) {
   const [titulo, setTituloError] = useInput("");
   const [autor, setAutorError] = useInput("");
   const [categoria, setCategoriaError] = useInput("");
   const [texto, setTextoError] = useInput("");
-
-  const categorias = [
-    {
-      value: "react",
-      label: "React"
-    },
-    {
-      value: "redux",
-      label: "Redux"
-    },
-    {
-      value: "udacity",
-      label: "Udacity"
-    }
-  ];
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -129,6 +119,17 @@ function SimplePostEdit({ classes, history, dispatch }) {
   );
 }
 
+function mapStateToProps({ categories }) {
+  if (Object.keys(categories).length === 0) return {};
+
+  return {
+    categories: Object.values(categories).map(({ name }) => ({
+      value: name,
+      label: name.charAt(0).toUpperCase() + name.slice(1)
+    }))
+  };
+}
+
 export const PostEdit = withRouter(
-  connect()(withStyles(styles)(SimplePostEdit))
+  connect(mapStateToProps)(withStyles(styles)(SimplePostEdit))
 );
