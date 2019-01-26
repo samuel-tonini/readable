@@ -7,7 +7,7 @@ import {
   COMMENT_EDIT
 } from "../actions/comments";
 
-export function comments(state = [], action) {
+export function comments(state = {}, action) {
   switch (action.type) {
     case COMMENT_INITIAL_DATA:
       return action.comments;

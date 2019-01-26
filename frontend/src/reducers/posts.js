@@ -10,7 +10,7 @@ import {
   POST_SORT
 } from "../actions/posts";
 
-export function posts(state = [], action) {
+export function posts(state = {}, action) {
   switch (action.type) {
     case POST_INITIAL_DATA:
       return { ...state, ...action.posts };

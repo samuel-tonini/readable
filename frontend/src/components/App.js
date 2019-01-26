@@ -61,8 +61,6 @@ function App({ dispatch, posts }) {
   );
 }
 
-function mapStateToProps({ posts }) {
-  return { posts };
-}
+const mapStateToProps = ({ posts }) => ({ posts });
 
 export default connect(mapStateToProps)(App);

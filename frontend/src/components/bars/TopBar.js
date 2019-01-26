@@ -50,9 +50,7 @@ function SimpleTopBar({ classes, hideButtons = false, history, categories }) {
   );
 }
 
-function mapStateToProps({ categories }) {
-  return { categories };
-}
+const mapStateToProps = ({ categories }) => ({ categories });
 
 export const TopBar = connect(mapStateToProps)(
   withRouter(withStyles(styles)(SimpleTopBar))

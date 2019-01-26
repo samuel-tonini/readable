@@ -13,8 +13,6 @@ function CommentList({ dispatch, comments, postId }) {
   ));
 }
 
-function mapStateToProps({ comments }) {
-  return { comments };
-}
+const mapStateToProps = ({ comments }) => ({ comments });
 
 export default connect(mapStateToProps)(CommentList);
