@@ -6,7 +6,8 @@ import {
   POST_DELETE,
   POST_COMMENT_ADD,
   POST_COMMENT_DELETE,
-  POST_EDIT
+  POST_EDIT,
+  POST_SORT
 } from "../actions/posts";
 
 export function posts(state = [], action) {
@@ -86,6 +87,67 @@ export function posts(state = [], action) {
           commentCount: state[downCommentKey].commentCount - 1
         }
       };
+    case POST_SORT:
+      if (action.classificacao === "crescente") {
+        console.log("crescente");
+
+        if (action.ordem === "data") {
+          console.log("data");
+          return {
+            ...state,
+            ...Object.values(state).sort(
+              (a, b) =>
+                a.timestamp > b.timestamp
+                  ? 1
+                  : b.timestamp > a.timestamp
+                    ? -1
+                    : 0
+            )
+          };
+        } else {
+          console.log("voteScore");
+          return {
+            ...state,
+            ...Object.values(state).sort(
+              (a, b) =>
+                a.voteScore > b.voteScore
+                  ? 1
+                  : b.voteScore > a.voteScore
+                    ? -1
+                    : 0
+            )
+          };
+        }
+      } else {
+        console.log("decrescente");
+        if (action.ordem === "data") {
+          console.log("data");
+          return {
+            ...state,
+            ...Object.values(state).sort(
+              (a, b) =>
+                a.timestamp > b.timestamp
+                  ? -1
+                  : b.timestamp > a.timestamp
+                    ? 1
+                    : 0
+            )
+          };
+        } else {
+          console.log("voteScore");
+          return {
+            ...state,
+            ...Object.values(state).sort(
+              (a, b) =>
+                a.voteScore > b.voteScore
+                  ? -1
+                  : b.voteScore > a.voteScore
+                    ? 1
+                    : 0
+            )
+          };
+        }
+      }
     default:
       return state;
   }

@@ -8,6 +8,7 @@ export const POST_COMMENT_DELETE = "POST_COMMENT_DELETE";
 export const POST_DELETE = "POST_DELETE";
 export const POST_UP_VOTE = "POST_UP_VOTE";
 export const POST_DOWN_VOTE = "POST_DOWN_VOTE";
+export const POST_SORT = "POST_SORT";
 
 export function postInitialData(posts) {
   return {
@@ -62,6 +63,14 @@ function postDelete(id) {
   return {
     type: POST_DELETE,
     id
+  };
+}
+
+export function postSort(ordem, classificacao) {
+  return {
+    type: POST_SORT,
+    ordem,
+    classificacao
   };
 }
 
