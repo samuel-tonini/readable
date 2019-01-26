@@ -92,15 +92,13 @@ function SimplePost({
         >
           <ThumbUp />
         </IconButton>
-        {!edit && (
-          <Badge
-            className={classes.badge}
-            badgeContent={commentCount}
-            color="secondary"
-          >
-            <Message color="action" />
-          </Badge>
-        )}
+        <Badge
+          className={classes.badge}
+          badgeContent={commentCount}
+          color="secondary"
+        >
+          <Message color="action" />
+        </Badge>
         <IconButton
           className={classes.deleteBtn}
           aria-label="Deletar post"
