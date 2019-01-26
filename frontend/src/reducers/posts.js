@@ -5,7 +5,8 @@ import {
   POST_DOWN_VOTE,
   POST_DELETE,
   POST_COMMENT_ADD,
-  POST_COMMENT_DELETE
+  POST_COMMENT_DELETE,
+  POST_EDIT
 } from "../actions/posts";
 
 export function posts(state = [], action) {
@@ -16,6 +17,18 @@ export function posts(state = [], action) {
       return {
         ...state,
         [action.post.id]: action.post
+      };
+    case POST_EDIT:
+      const [editKey] = Object.keys(state).filter(
+        key => state[key].id === action.post.id
+      );
+
+      return {
+        ...state,
+        [editKey]: {
+          ...state[editKey],
+          ...action.post
+        }
       };
     case POST_UP_VOTE:
       const [upKey] = Object.keys(state).filter(

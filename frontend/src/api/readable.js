@@ -130,6 +130,32 @@ export const addPost = (title, body, author, category) =>
     })
     .then(res => res.data.add);
 
+const editPostMutation = gql`
+  mutation($id: String, $title: String, $body: String) {
+    edit(body: { title: $title, body: $body }, id: $id)
+      @rest(
+        type: "Post"
+        path: "/posts/{args.id}"
+        method: "PUT"
+        bodyKey: "body"
+      ) {
+      id
+    }
+  }
+`;
+
+export const editPost = (id, title, body) =>
+  client
+    .mutate({
+      mutation: editPostMutation,
+      variables: {
+        id,
+        title,
+        body
+      }
+    })
+    .then(res => res.data.add);
+
 const votePostMutation = gql`
   mutation($id: String, $option: String) {
     vote(body: { option: $option }, id: $id)

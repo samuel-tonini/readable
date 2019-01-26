@@ -22,29 +22,37 @@ function App({ dispatch, posts }) {
           )}
         />
         <Route path="/" exact render={() => <PostList posts={posts} />} />
+        <Route path="/new" exact component={PostEdit} />
         <Route
-          path="/:category/:id"
           exact
-          render={({ match }) => (
-            <PostList edit posts={postsFilterId(posts, match.params.id)} />
-          )}
+          path="/edit/:id"
+          render={({
+            match: {
+              params: { id }
+            }
+          }) => <PostEdit post={postsFilterId(posts, id)} />}
         />
         <Route
-          path="/:category"
           exact
+          path="/:category"
+          render={({
+            match: {
+              params: { category }
+            }
+          }) => <PostList posts={postsFilterCategory(posts, category)} />}
+        />
+        <Route
+          exact
+          path="/:category/:id"
           render={({
             match: {
               params: { category }
             }
           }) => {
-            switch (category) {
-              case "new":
-                return <PostEdit />;
-              default:
-                return (
-                  <PostList posts={postsFilterCategory(posts, category)} />
-                );
-            }
+            if (category === "edit") return null;
+            return (
+              <PostList edit posts={postsFilterCategory(posts, category)} />
+            );
           }}
         />
         <Route path="/" component={BottomBar} />

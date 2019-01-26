@@ -1,7 +1,8 @@
-import { addPost, votePost, deletePost } from "../api/readable";
+import { addPost, votePost, deletePost, editPost } from "../api/readable";
 
 export const POST_INITIAL_DATA = "POST_INITIAL_DATA";
 export const POST_ADD = "POST_ADD";
+export const POST_EDIT = "POST_EDIT";
 export const POST_COMMENT_ADD = "POST_COMMENT_ADD";
 export const POST_COMMENT_DELETE = "POST_COMMENT_DELETE";
 export const POST_DELETE = "POST_DELETE";
@@ -18,6 +19,13 @@ export function postInitialData(posts) {
 function postAdd(post) {
   return {
     type: POST_ADD,
+    post
+  };
+}
+
+function postEdit(post) {
+  return {
+    type: POST_EDIT,
     post
   };
 }
@@ -71,6 +79,20 @@ export function handlePostAdd(titulo, autor, categoria, texto) {
           voteScore: res.voteScore,
           deleted: res.deleted,
           commentCount: res.commentCount
+        })
+      )
+    );
+  };
+}
+
+export function handlePostEdit(id, titulo, texto) {
+  return dispatch => {
+    return editPost(id, titulo, texto).then(() =>
+      dispatch(
+        postEdit({
+          id,
+          title: titulo,
+          body: texto
         })
       )
     );

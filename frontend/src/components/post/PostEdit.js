@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TextInput, SelectInput } from "../../input";
 import { useInput } from "../../hooks";
 import { withStyles } from "@material-ui/core/styles";
@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
-import { handlePostAdd } from "../../actions/posts";
+import { handlePostAdd, handlePostEdit } from "../../actions/posts";
 
 const styles = theme => ({
   root: {
@@ -27,12 +27,25 @@ function SimplePostEdit({
   classes,
   history,
   dispatch,
-  categories: categorias
+  categories: categorias,
+  post = []
 }) {
-  const [titulo, setTituloError] = useInput("");
-  const [autor, setAutorError] = useInput("");
-  const [categoria, setCategoriaError] = useInput("");
-  const [texto, setTextoError] = useInput("");
+  const [titulo, setTituloError, setTitulo] = useInput("");
+  const [autor, setAutorError, setAutor] = useInput("");
+  const [categoria, setCategoriaError, setCategoria] = useInput("");
+  const [texto, setTextoError, setTexto] = useInput("");
+
+  useEffect(
+    () => {
+      post.forEach(({ title, category, author, body }) => {
+        setTitulo(title);
+        setCategoria(category);
+        setAutor(author);
+        setTexto(body);
+      });
+    },
+    [post]
+  );
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -56,9 +69,14 @@ function SimplePostEdit({
       categoria.value !== "" &&
       texto.value !== ""
     ) {
-      dispatch(
-        handlePostAdd(titulo.value, autor.value, categoria.value, texto.value)
-      );
+      if (post.length > 0) {
+        dispatch(handlePostEdit(post[0].id, titulo.value, texto.value));
+      } else {
+        dispatch(
+          handlePostAdd(titulo.value, autor.value, categoria.value, texto.value)
+        );
+      }
+
       history.push("/");
     }
   };
@@ -76,10 +94,16 @@ function SimplePostEdit({
               />
             </div>
             <div>
-              <TextInput {...autor} label="Autor" placeholder="Autor do post" />
+              <TextInput
+                disabled={post.length > 0}
+                {...autor}
+                label="Autor"
+                placeholder="Autor do post"
+              />
             </div>
             <div>
               <SelectInput
+                disabled={post.length > 0}
                 {...categoria}
                 options={categorias}
                 label="Categoria"

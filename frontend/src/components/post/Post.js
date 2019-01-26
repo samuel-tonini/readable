@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { ThumbDown, ThumbUp, Message, Delete } from "@material-ui/icons";
+import { ThumbDown, ThumbUp, Message, Delete, Edit } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import {
   CardHeader,
@@ -99,6 +99,13 @@ function SimplePost({
         >
           <Message color="action" />
         </Badge>
+        {edit && (
+          <Link to={`/edit/${id}`}>
+            <IconButton aria-label="Aumentar votação">
+              <Edit />
+            </IconButton>
+          </Link>
+        )}
         <IconButton
           className={classes.deleteBtn}
           aria-label="Deletar post"
