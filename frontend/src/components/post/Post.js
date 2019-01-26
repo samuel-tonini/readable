@@ -58,7 +58,7 @@ function SimplePost({
         title={
           <Link
             style={{ textDecoration: "none", color: "inherit" }}
-            to={`/posts/${id}`}
+            to={`/${category}/${id}`}
           >
             {title}
           </Link>

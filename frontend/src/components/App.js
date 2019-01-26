@@ -22,34 +22,30 @@ function App({ dispatch, posts }) {
           )}
         />
         <Route path="/" exact render={() => <PostList posts={posts} />} />
-        <Route path="/new" exact render={() => <PostEdit />} />
         <Route
-          path="/react"
-          exact
-          render={() => (
-            <PostList posts={postsFilterCategory(posts, "react")} />
-          )}
-        />
-        <Route
-          path="/redux"
-          exact
-          render={() => (
-            <PostList posts={postsFilterCategory(posts, "redux")} />
-          )}
-        />
-        <Route
-          path="/udacity"
-          exact
-          render={() => (
-            <PostList posts={postsFilterCategory(posts, "udacity")} />
-          )}
-        />
-        <Route
-          path="/posts/:id"
+          path="/:category/:id"
           exact
           render={({ match }) => (
             <PostList edit posts={postsFilterId(posts, match.params.id)} />
           )}
+        />
+        <Route
+          path="/:category"
+          exact
+          render={({
+            match: {
+              params: { category }
+            }
+          }) => {
+            switch (category) {
+              case "new":
+                return <PostEdit />;
+              default:
+                return (
+                  <PostList posts={postsFilterCategory(posts, category)} />
+                );
+            }
+          }}
         />
         <Route path="/" component={BottomBar} />
       </>
