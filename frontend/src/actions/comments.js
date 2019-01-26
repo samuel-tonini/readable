@@ -2,7 +2,8 @@ import {
   getPostComment,
   voteComment,
   deleteComment,
-  addComment
+  addComment,
+  editComment
 } from "../api/readable";
 
 export const COMMENT_INITIAL_DATA = "COMMENT_INITIAL_DATA";
@@ -10,6 +11,7 @@ export const COMMENT_UP_VOTE = "COMMENT_UP_VOTE";
 export const COMMENT_DOWN_VOTE = "COMMENT_DOWN_VOTE";
 export const COMMENT_DELETE_VOTE = "COMMENT_DELETE_VOTE";
 export const COMMENT_ADD = "COMMENT_ADD";
+export const COMMENT_EDIT = "COMMENT_EDIT";
 
 function commentInitialData(comments) {
   return {
@@ -21,6 +23,13 @@ function commentInitialData(comments) {
 function commentAdd(comment) {
   return {
     type: COMMENT_ADD,
+    comment
+  };
+}
+
+function commentEdit(comment) {
+  return {
+    type: COMMENT_EDIT,
     comment
   };
 }
@@ -67,6 +76,20 @@ export function handleCommentAdd(autor, texto, postId) {
           deleted: res.deleted,
           commentCount: res.commentCount,
           parentId: res.parentId
+        })
+      )
+    );
+  };
+}
+
+export function handleCommentEdit(id, texto) {
+  return dispatch => {
+    return editComment(id, texto).then(res =>
+      dispatch(
+        commentEdit({
+          id: id,
+          timestamp: res.timestamp,
+          body: texto
         })
       )
     );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -6,15 +6,23 @@ import {
   CardContent,
   Divider,
   IconButton,
-  CardActions
+  CardActions,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  DialogContent
 } from "@material-ui/core";
-import { ThumbDown, ThumbUp, Delete } from "@material-ui/icons";
+import { ThumbDown, ThumbUp, Delete, Edit } from "@material-ui/icons";
 import {
   handleCommentDelete,
   handleCommentUpVote,
-  handleCommentDownVote
+  handleCommentDownVote,
+  handleCommentEdit
 } from "../../actions/comments";
 import { postCommentDelete } from "../../actions/posts";
+import { TextInput } from "../../input";
+import { useInput } from "../../hooks";
 
 const styles = theme => ({
   root: {
@@ -32,11 +40,55 @@ const styles = theme => ({
   }
 });
 
+function SimpleDialog({ onClose, comment, open }) {
+  const [texto] = useInput(comment);
+
+  return (
+    <Dialog open={open} aria-labelledby="simple-dialog-title">
+      <DialogTitle id="simple-dialog-title">Edição de Comentário</DialogTitle>
+      <DialogContent>
+        <TextInput
+          {...texto}
+          label="Texto"
+          placeholder="Texto do comentário"
+          multiline
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            onClose("");
+          }}
+          color="primary"
+        >
+          Cancelar
+        </Button>
+        <Button
+          onClick={() => {
+            onClose(texto.value);
+          }}
+          color="primary"
+          autoFocus
+        >
+          Salvar
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
 function Comment({
   classes,
   dispatch,
   comment: { id, timestamp, body, author, voteScore, parentId }
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleCloseModal = comentario => {
+    setIsOpen(false);
+    if (comentario) dispatch(handleCommentEdit(id, comentario));
+  };
+
   const horario = new Date(timestamp);
   return (
     <>
@@ -65,16 +117,24 @@ function Comment({
         <Typography variant="subheading">{voteScore}</Typography>
         <IconButton
           aria-label="Aumentar votação"
-          onClick={e => {
+          onClick={() => {
             dispatch(handleCommentUpVote(id));
           }}
         >
           <ThumbUp />
         </IconButton>
         <IconButton
+          aria-label="Editar comentário"
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
+          <Edit />
+        </IconButton>
+        <IconButton
           className={classes.deleteBtn}
           aria-label="Deletar comentário"
-          onClick={e => {
+          onClick={() => {
             dispatch(handleCommentDelete(id));
             dispatch(postCommentDelete(parentId));
           }}
@@ -82,6 +142,7 @@ function Comment({
           <Delete />
         </IconButton>
       </CardActions>
+      <SimpleDialog comment={body} open={isOpen} onClose={handleCloseModal} />
     </>
   );
 }

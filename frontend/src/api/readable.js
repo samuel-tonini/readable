@@ -264,6 +264,33 @@ export const addComment = (body, author, parentId) =>
     })
     .then(res => res.data.add);
 
+const editCommentMutation = gql`
+  mutation($id: String, $timestamp: Number, $body: String) {
+    add(body: { timestamp: $timestamp, body: $body }, id: $id)
+      @rest(
+        type: "Comment"
+        path: "/comments/{args.id}"
+        method: "PUT"
+        bodyKey: "body"
+      ) {
+      id
+      timestamp
+    }
+  }
+`;
+
+export const editComment = (id, body) =>
+  client
+    .mutate({
+      mutation: editCommentMutation,
+      variables: {
+        id,
+        timestamp: Date.now(),
+        body
+      }
+    })
+    .then(res => res.data.add);
+
 const voteCommentMutation = gql`
   mutation($id: String, $option: String) {
     vote(body: { option: $option }, id: $id)

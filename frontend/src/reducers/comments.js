@@ -3,7 +3,8 @@ import {
   COMMENT_UP_VOTE,
   COMMENT_DOWN_VOTE,
   COMMENT_DELETE_VOTE,
-  COMMENT_ADD
+  COMMENT_ADD,
+  COMMENT_EDIT
 } from "../actions/comments";
 
 export function comments(state = [], action) {
@@ -14,6 +15,19 @@ export function comments(state = [], action) {
       return {
         ...state,
         [action.comment.id]: action.comment
+      };
+    case COMMENT_EDIT:
+      const [editKey] = Object.keys(state).filter(
+        key => state[key].id === action.comment.id
+      );
+
+      return {
+        ...state,
+        [editKey]: {
+          ...state[editKey],
+          timestamp: action.comment.timestamp,
+          body: action.comment.body
+        }
       };
     case COMMENT_UP_VOTE:
       const [upKey] = Object.keys(state).filter(
